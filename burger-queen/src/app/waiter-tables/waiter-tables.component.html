@@ -1,14 +1,22 @@
     <section class="bar-header">
         <bar-side></bar-side>
 
-        <header>
-            <h2>Dashboard</h2>
-            <h2>Waiter</h2> 
-        </header>  
+        <section>
+            <header>
+                <h2>Dashboard</h2>
+                <h2>Waiter</h2> 
+            </header>  
+            <ul>
+                <li class="list" [ngClass]="{ 'clicked': clicked }" (click)="changeTrue()">Pending</li>
+                <li class="list" [ngClass]="{ 'clicked': !clicked }" (click)="changeFalse()">Delivered</li>
+            </ul>
+        </section>
     </section>
-        <main>
-            <app-orders 
-                [data]="order" 
-                (deliver)="deliverOrder($event)" *ngFor="let order of orders, index as i">
-            </app-orders>
-        </main>
+        
+    <main>  
+        <app-orders 
+            [data]="order" 
+            (deliver)="deliverOrder($event)" *ngFor="let order of orders, index as i">
+        </app-orders>
+    </main>
+   
