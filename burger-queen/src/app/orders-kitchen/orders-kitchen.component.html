@@ -12,7 +12,7 @@
             <li class="list" [ngClass]="{ 'clicked': !clicked }" (click)="changeFalse()">Ready</li>
         </ul>
 
-        <article class="" *ngIf="clicked">
+        <article *ngIf="clicked">
             <section class="container" *ngFor="let order of orderPending, index as i">  
                 <section class="container-header" >
                         <h3>Order {{i+1}}.</h3>
