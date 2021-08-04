@@ -43,6 +43,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.productsService.getAllProducts()
     .subscribe((response: any) => { 
+      console.log(response);
       this.items = response.products
       this.allProducts(response)
       this.filterType('burger')
@@ -91,7 +92,6 @@ export class ProductsComponent implements OnInit {
     }    
     this.getTotal()
   }
-
   // Métodos para el componente del carrito de compras
   minousOneItem(item: OrderProductModel){
     this.productItem = this.productItem.map((el)=>{

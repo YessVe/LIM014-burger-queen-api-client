@@ -58,12 +58,22 @@ export class OrdersKitchenComponent implements OnInit {
     this.clicked = true
   }
   updateOneOrder(item: any){
-    console.log(item);
     const dateProcesed = dayjs();
     if (item.status === 'pending') {
       const order ={
         ...item,
         status: 'delivering',
+        dateProcesed: dateProcesed.format('YYYY-MM-DD HH:mm:ss')
+      }
+      this.orderService.updateOrder(item._id, order)
+      .subscribe(()=>{
+        this.orderService.publicarOrden(item);
+        this.bringAllOrders()
+      })  
+    } else if (item.status === 'delivering') {
+      const order ={
+        ...item,
+        status: 'delivered',
         dateProcesed: dateProcesed.format('YYYY-MM-DD HH:mm:ss')
       }
       this.orderService.updateOrder(item._id, order)
