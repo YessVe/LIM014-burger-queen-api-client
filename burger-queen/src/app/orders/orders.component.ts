@@ -19,15 +19,6 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {  }
 
-  showValidation(){
-    this.isDisplay =! this.isDisplay;
-  }
-
-  deliverOrder(item: any){
-    console.log('click en yes');
-    //desaparecer la orden de la pantalla
-    console.log(item);
-    this.deliver.emit(item) //PARTE DE EMIT
-  }
+ 
   
 }
