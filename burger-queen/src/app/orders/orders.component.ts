@@ -9,16 +9,8 @@ import { OrdersService } from '../services/orders/orders.service';
 })
 export class OrdersComponent implements OnInit {
 
-  @Input('data') order:any;
-  @Output() deliver = new EventEmitter<string>()
-
-  isDisplay:boolean = false;
-  // @Output() borrar = new EventEmitter<string>() --PARTE DE EMIT
-
   constructor(){  }
 
   ngOnInit(): void {  }
 
- 
-  
 }
