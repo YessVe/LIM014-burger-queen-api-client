@@ -68,13 +68,7 @@ export class WaiterTablesComponent implements OnInit {
     }
   } 
 
-  testing(){
-    console.log('testing');
-    
-  }
   filterStatus(category: any) {
-    console.log('hola');
-    
     this.orders = this.prueba.filter((elem: any) => {
       return elem.status === category;
     })
@@ -82,7 +76,16 @@ export class WaiterTablesComponent implements OnInit {
 
 }
 
-  
+// showValidation(){
+//   this.isDisplay =! this.isDisplay;
+// }
+
+// deliverOrder(item: any){
+//   console.log('click en yes');
+//   //desaparecer la orden de la pantalla
+//   console.log(item);
+//   this.deliver.emit(item) //PARTE DE EMIT
+// }
   
 // deliverOrder(item: any){
   //   this.orderService.deleteOrder(_id)
