@@ -6,17 +6,26 @@
                 <h2>Dashboard</h2>
                 <h2>Waiter</h2> 
             </header>  
-            <ul>
-                <li class="list" [ngClass]="{ 'clicked': clicked }" (click)="changeTrue()">Pending</li>
-                <li class="list" [ngClass]="{ 'clicked': !clicked }" (click)="changeFalse()">Delivered</li>
-            </ul>
+
         </section>
     </section>
         
     <main>  
-        <app-orders 
-            [data]="order" 
-            (deliver)="deliverOrder($event)" *ngFor="let order of orders, index as i">
-        </app-orders>
+
+        <button (click)="filterStatus('pending')">Pending</button>
+        <button (click)="filterStatus('delivering')">Delivering</button>
+        <button (click)="filterStatus('delivered')">Delivered</button>
+
+        <section *ngFor="let order of orders, index as i" class="orders">
+            <section class="order">
+                <div class="order-body">        
+                    <span class="order-id">Order: {{order.client |uppercase}}</span>
+                    <span class="order-id">Status: {{order.status |lowercase}}</span>
+                </div>
+                <div class="order-footer">
+                    <input *ngIf="order.status === 'pending'" type="button" value="It's done" (click)="deliverOrder(order)">
+                </div>
+            </section>
+        </section>
     </main>
    
