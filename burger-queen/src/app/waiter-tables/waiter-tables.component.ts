@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import * as dayjs from 'dayjs';
 import { OrdersService } from '../services/orders/orders.service';
 import { catchError} from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { OrdersModel, OrderProductModel, OrderDetailProductModel, IOrdersModel } from '../models/orders.model';
+import { ProductDetailModel } from '../models/product.model';
 
 @Component({
   selector: 'app-waiter-tables',
@@ -10,55 +12,79 @@ import { OrdersModel, OrderProductModel, OrderDetailProductModel, IOrdersModel }
   styleUrls: ['./waiter-tables.component.css']
 })
 export class WaiterTablesComponent implements OnInit {
-
-  // orders = []; //como usuarios =[]
+  prueba: Array<any> 
+  items: Array<any>
+  clicked: boolean;
+  isDisplay:boolean = false;
   isWaiter:boolean= true;
   orders: Array<OrdersModel> //como usuarios =[]
-  insideOrders: Array<OrderProductModel>
-
+  // orderPending: Array<OrdersModel>
+  // orderDelivering: Array<OrdersModel>
+  // orderDelivered: Array<OrdersModel>
+  pedido$:Observable<OrdersModel[]>;
+  
   constructor(private orderService: OrdersService) {
+    this.prueba = []
+    this.items = []
+    this.clicked = true;
     this.orders = [];
-    this.insideOrders = []
+    // this.orderPending = [];
+    // this.orderDelivering = [];
+    // this.orderDelivered = [];
+    this.pedido$=this.orderService.cart$;
   }
 
   ngOnInit(): void {
-    this.bringAllOrders()
-  }
-   bringAllOrders(){
     this.orderService.getAllOrders()
-    .pipe(
-      catchError((error)=>{
-        // console.log('ERROR:', error);
-        return throwError(error);
-      })
-    )  
-    .subscribe((response: any) => { 
-        console.log(this.orders);
+        .subscribe((response: any) => { 
         this.orders = response;
-        this.insideOrders = response.products;
-        console.log(this.orders);
-   })
+        this.allOrders(response)
+        this.filterStatus('pending')
+        })
   }
-
+  
+  allOrders (elem:Array<OrdersModel>){
+    elem.forEach((el: OrdersModel)=>{
+      this.prueba.push(el)
+    })
+  }
    deliverOrder(item: any){
+    const dateProcesed = dayjs();
     if (item.status === 'delivering') {
-      const order: IOrdersModel ={
+      const order ={
         ...item,
         status: 'delivered',
-        // dateProcesed: dateProcesed.format('YYYY-MM-DD HH:mm:ss')
+        dateProcesed: dateProcesed.format('YYYY-MM-DD HH:mm:ss')
       }
       this.orderService.updateOrder(item._id, order)
-      .pipe(catchError((error)=>{
-        return throwError(error);
-      })
-      )
       .subscribe(()=>{
-        this.bringAllOrders()
+        this.orderService.publicarOrden(item);
+        this.orderService.getAllOrders()
+        .subscribe((response) => { 
+        this.orders = response;
+        this.filterStatus('pending')
+        })
       })  
     }
   } 
 
-  // deliverOrder(item: any){
+  testing(){
+    console.log('testing');
+    
+  }
+  filterStatus(category: any) {
+    console.log('hola');
+    
+    this.orders = this.prueba.filter((elem: any) => {
+      return elem.status === category;
+    })
+  }
+
+}
+
+  
+  
+// deliverOrder(item: any){
   //   this.orderService.deleteOrder(_id)
   //   .pipe(
   //     catchError((error)=>{
@@ -76,10 +102,4 @@ export class WaiterTablesComponent implements OnInit {
   //    //NO ESTAMOS CAMBIANO DE ESTADO AUN
   //     })
   //} 
-      
-}
-
-  
-  
-
 
